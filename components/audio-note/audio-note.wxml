@@ -1,0 +1,43 @@
+<!-- components/audio-note/audio-note.wxml -->
+<view class="audio-note {{dragging ? 'audio-note--dragging' : ''}} {{selected ? 'audio-note--selected' : ''}} {{locked ? 'audio-note--locked' : ''}}"
+      style="left: {{x}}px; top: {{y}}px; z-index: {{zIndex || 1}};"
+      catchtouchstart="onTouchStart"
+      catchtouchmove="onTouchMove"
+      catchtouchend="onTouchEnd">
+  <!-- 锁定图标 -->
+  <view wx:if="{{locked}}" class="note-lock">
+    <view class="note-lock__icon"></view>
+  </view>
+  <!-- 头部色条 -->
+  <view class="audio-note__header">
+    <input class="audio-note__title"
+           value="{{title}}"
+           placeholder="标题"
+           placeholder-class="audio-note__title-placeholder"
+           disabled="{{locked}}"
+           bindblur="onTitleBlur"
+           bindconfirm="onTitleConfirm"
+           catchtap="onTitleTap" />
+    <view class="audio-note__delete" catchtouchstart="_onDeleteTouchStart" catchtouchend="_onDeleteTouchEnd">
+      <text class="audio-note__delete-icon">×</text>
+    </view>
+  </view>
+  <!-- 播放条 -->
+  <view class="audio-note__body">
+    <view class="audio-note__player {{locked ? 'audio-note__player--locked' : ''}}" catchtouchstart="_onPlayTouchStart" catchtouchend="_onPlayTouchEnd">
+      <!-- 播放/暂停按钮 -->
+      <view class="audio-note__play-btn">
+        <view wx:if="{{!playing}}" class="audio-note__play-icon audio-note__play-icon--play"></view>
+        <view wx:else class="audio-note__play-icon audio-note__play-icon--pause"></view>
+      </view>
+      <!-- 波形 -->
+      <view class="audio-note__wave">
+        <view wx:for="{{waveBars}}" wx:key="index"
+              class="audio-note__wave-bar {{playing ? 'audio-note__wave-bar--active' : ''}}"
+              style="height: {{item}}rpx; animation-delay: {{index * 0.08}}s;"></view>
+      </view>
+      <!-- 时长 -->
+      <text class="audio-note__duration">{{_durationText}}</text>
+    </view>
+  </view>
+</view>

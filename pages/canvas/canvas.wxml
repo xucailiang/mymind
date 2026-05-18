@@ -1,0 +1,192 @@
+<!-- pages/canvas/canvas.wxml -->
+<!-- 外层视口容器 -->
+<view class="viewport">
+
+  <!-- 画布层（可平移 + 缩放） -->
+  <view class="canvas-layer"
+        style="transform: translate({{translateX}}px, {{translateY}}px) scale({{scale}}); transform-origin: 0 0;"
+        bindtouchstart="onCanvasTouchStart"
+        bindtouchmove="onCanvasTouchMove"
+        bindtouchend="onCanvasTouchEnd">
+
+    <!-- 拖拽 Ghost（原位置虚线轮廓） -->
+    <view wx:if="{{ghostVisible}}"
+          class="ghost ghost--{{ghostType}}"
+          style="left: {{ghostX}}px; top: {{ghostY}}px; width: {{ghostW}}px; height: {{ghostH}}px;">
+    </view>
+
+    <!-- 元素列表 -->
+    <text-note wx:for="{{items}}"
+               wx:key="_id"
+               wx:if="{{item.type === 'text'}}"
+               itemId="{{item._id}}"
+               x="{{item.x}}"
+               y="{{item.y}}"
+               title="{{item.title}}"
+               content="{{item.content}}"
+               dragging="{{item.dragging || false}}"
+               selected="{{selectedId === item._id}}"
+               locked="{{item.locked || false}}"
+               zIndex="{{item.zIndex || 1}}"
+               width="{{item.width || 200}}"
+               bind:itemtouchstart="onItemTouchStart"
+               bind:itemtouchmove="onItemTouchMove"
+               bind:itemtouchend="onItemTouchEnd"
+               binddelete="onDeleteItem"
+               bindupdate="onUpdateItem"
+               bindresizestart="onResizeStart"
+               bindresizemove="onResizeMove"
+               bindresizeend="onResizeEnd" />
+
+    <image-note wx:for="{{items}}"
+                wx:key="_id"
+                wx:if="{{item.type === 'image'}}"
+                itemId="{{item._id}}"
+                x="{{item.x}}"
+                y="{{item.y}}"
+                title="{{item.title}}"
+                src="{{item.src}}"
+                dragging="{{item.dragging || false}}"
+                selected="{{selectedId === item._id}}"
+                locked="{{item.locked || false}}"
+                zIndex="{{item.zIndex || 1}}"
+                width="{{item.width || 200}}"
+                height="{{item.height || 200}}"
+                bind:itemtouchstart="onItemTouchStart"
+                bind:itemtouchmove="onItemTouchMove"
+                bind:itemtouchend="onItemTouchEnd"
+                binddelete="onDeleteItem"
+                bindupdate="onUpdateItem"
+                bindresizestart="onResizeStart"
+                bindresizemove="onResizeMove"
+                bindresizeend="onResizeEnd" />
+
+    <audio-note wx:for="{{items}}"
+                wx:key="_id"
+                wx:if="{{item.type === 'audio'}}"
+                itemId="{{item._id}}"
+                x="{{item.x}}"
+                y="{{item.y}}"
+                title="{{item.title}}"
+                src="{{item.src}}"
+                duration="{{item.duration || 0}}"
+                dragging="{{item.dragging || false}}"
+                selected="{{selectedId === item._id}}"
+                locked="{{item.locked || false}}"
+                zIndex="{{item.zIndex || 1}}"
+                bind:itemtouchstart="onItemTouchStart"
+                bind:itemtouchmove="onItemTouchMove"
+                bind:itemtouchend="onItemTouchEnd"
+                binddelete="onDeleteItem"
+                bindupdate="onUpdateItem" />
+  </view>
+
+  <!-- 空状态提示 -->
+  <view wx:if="{{isEmpty}}" class="empty-state">
+    <text class="empty-state__icon">🧠</text>
+    <text class="empty-state__text">点按下方按钮，开始记录灵感</text>
+  </view>
+
+  <!-- 长按上下文菜单 -->
+  <view wx:if="{{contextMenu}}" class="context-menu-backdrop" catchtap="onMenuBackdropTap">
+    <view class="context-menu" style="left: {{contextMenu.x > 200 ? contextMenu.x - 200 : 16}}px; top: {{contextMenu.y > 80 ? contextMenu.y - 80 : 16}}px;" catchtap="stopPropagation">
+      <view class="context-menu__item" catchtap="onMenuCopy">
+        <text class="context-menu__icon">📋</text>
+        <text class="context-menu__label">复制</text>
+      </view>
+      <view class="context-menu__item context-menu__item--danger" catchtap="onMenuDelete">
+        <text class="context-menu__icon">🗑</text>
+        <text class="context-menu__label">删除</text>
+      </view>
+      <view class="context-menu__divider"></view>
+      <view class="context-menu__item" catchtap="onMenuLock">
+        <text class="context-menu__icon">{{contextMenu.locked ? '🔓' : '🔒'}}</text>
+        <text class="context-menu__label">{{contextMenu.locked ? '解锁' : '锁定'}}</text>
+      </view>
+      <view class="context-menu__divider"></view>
+      <view class="context-menu__item" catchtap="onMenuBringToFront">
+        <text class="context-menu__icon">⬆</text>
+        <text class="context-menu__label">置顶</text>
+      </view>
+      <view class="context-menu__item" catchtap="onMenuSendToBack">
+        <text class="context-menu__icon">⬇</text>
+        <text class="context-menu__label">置底</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 右侧控制面板 -->
+  <view class="side-panel">
+
+    <!-- 撤销 / 重做 -->
+    <view class="side-panel__row side-panel__row--history">
+      <view class="side-panel__btn {{canUndo ? '' : 'side-panel__btn--disabled'}}"
+            catchtap="onUndo">
+        <text class="side-panel__icon">↩</text>
+      </view>
+      <view class="side-panel__btn {{canRedo ? '' : 'side-panel__btn--disabled'}}"
+            catchtap="onRedo">
+        <text class="side-panel__icon">↪</text>
+      </view>
+    </view>
+
+    <!-- 缩放控件 -->
+    <view class="side-panel__row side-panel__row--zoom">
+      <view class="side-panel__btn" catchtap="onZoomOut">
+        <text class="side-panel__zoom-text">−</text>
+      </view>
+      <text class="side-panel__scale-text" catchtap="onZoomReset">{{scaleText}}</text>
+      <view class="side-panel__btn" catchtap="onZoomIn">
+        <text class="side-panel__zoom-text">+</text>
+      </view>
+    </view>
+
+    <!-- 适配按钮 -->
+    <view class="side-panel__row">
+      <view class="side-panel__btn side-panel__btn--text" catchtap="onFitAll">
+        <text class="side-panel__label">适配</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 选中工具栏（底部浮动，仅选中时显示） -->
+  <view wx:if="{{hasSelection}}" class="selection-bar">
+    <view class="selection-bar__btn" catchtap="onCopyItem">
+      <text class="selection-bar__label">复制</text>
+    </view>
+    <view class="selection-bar__btn selection-bar__btn--danger" catchtap="onDeleteSelected">
+      <text class="selection-bar__label">删除</text>
+    </view>
+    <view class="selection-bar__divider"></view>
+    <view class="selection-bar__btn" catchtap="onToggleLock">
+      <text class="selection-bar__label">🔒/🔓</text>
+    </view>
+    <view class="selection-bar__divider"></view>
+    <view class="selection-bar__btn" catchtap="onBringToFront">
+      <text class="selection-bar__label">置顶</text>
+    </view>
+    <view class="selection-bar__btn" catchtap="onSendToBack">
+      <text class="selection-bar__label">置底</text>
+    </view>
+  </view>
+
+  <!-- 底部工具栏（固定浮动） -->
+  <view class="toolbar">
+    <view class="toolbar__btn" catchtap="onAddText">
+      <text class="toolbar__icon">📝</text>
+      <text class="toolbar__label">文字</text>
+    </view>
+    <view class="toolbar__divider"></view>
+    <view class="toolbar__btn" catchtap="onAddImage">
+      <text class="toolbar__icon">📷</text>
+      <text class="toolbar__label">图片</text>
+    </view>
+    <view class="toolbar__divider"></view>
+    <view class="toolbar__btn toolbar__btn--record {{isRecording ? 'toolbar__btn--recording' : ''}}"
+          catchtap="onRecordToggle">
+      <text class="toolbar__icon toolbar__icon--record">{{isRecording ? '⏹' : '🎤'}}</text>
+      <text class="toolbar__label">{{isRecording ? '停止' : '录音'}}</text>
+      <view wx:if="{{isRecording}}" class="toolbar__pulse"></view>
+    </view>
+  </view>
+</view>

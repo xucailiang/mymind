@@ -1,0 +1,23 @@
+<!-- pages/login/login.wxml -->
+<view class="login-container">
+  <view class="login-logo">
+    <view class="logo-icon">M</view>
+    <text class="app-name">MyMind</text>
+    <text class="app-slogan">你的无限画布备忘录</text>
+  </view>
+  <view class="login-section">
+    <!-- 新版推荐方案 -->
+    <button wx:if="{{canIUseGetUserProfile}}" class="login-btn" bindtap="onGetUserProfile">
+      微信授权登录
+    </button>
+    <!-- 兼容方案 -->
+    <button wx:elif="{{canIUseGetUserInfo}}" class="login-btn" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">
+      微信授权登录
+    </button>
+    <!-- 最终降级 -->
+    <button wx:else class="login-btn" bindtap="onGetUserProfile">
+      微信授权登录
+    </button>
+    <text class="login-tip">登录后数据将同步到云端</text>
+  </view>
+</view>

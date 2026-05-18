@@ -1,0 +1,41 @@
+<!-- components/image-note/image-note.wxml -->
+<view class="image-note {{dragging ? 'image-note--dragging' : ''}} {{selected ? 'image-note--selected' : ''}} {{locked ? 'image-note--locked' : ''}}"
+      style="left: {{x}}px; top: {{y}}px; z-index: {{zIndex || 1}}; {{selected ? 'overflow: visible;' : ''}}"
+      catchtouchstart="onTouchStart"
+      catchtouchmove="onTouchMove"
+      catchtouchend="onTouchEnd">
+  <!-- 锁定图标 -->
+  <view wx:if="{{locked}}" class="note-lock">
+    <view class="note-lock__icon"></view>
+  </view>
+  <!-- 头部色条 -->
+  <view class="image-note__header">
+    <input class="image-note__title"
+           value="{{title}}"
+           placeholder="标题"
+           placeholder-class="image-note__title-placeholder"
+           disabled="{{locked}}"
+           bindblur="onTitleBlur"
+           bindconfirm="onTitleConfirm"
+           catchtap="onTitleTap" />
+    <view class="image-note__delete" catchtouchstart="_onDeleteTouchStart" catchtouchend="_onDeleteTouchEnd">
+      <text class="image-note__delete-icon">×</text>
+    </view>
+  </view>
+  <!-- 图片区域 -->
+  <view class="image-note__body" catchtouchstart="_onImageTouchStart" catchtouchend="_onImageTouchEnd">
+    <image class="image-note__img"
+           src="{{src}}"
+           mode="aspectFill"
+           style="width: {{width || 200}}px; height: {{height || 200}}px;"
+           binderror="onImageError"
+           lazy-load="{{true}}" />
+  </view>
+  <!-- 缩放手柄（选中且非锁定时显示） -->
+  <view wx:if="{{selected && !locked}}"
+        class="resize-handle"
+        catchtouchstart="onResizeStart"
+        catchtouchmove="onResizeMove"
+        catchtouchend="onResizeEnd">
+  </view>
+</view>

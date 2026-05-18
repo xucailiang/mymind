@@ -1,0 +1,49 @@
+<!-- components/text-note/text-note.wxml -->
+<view class="text-note {{dragging ? 'text-note--dragging' : ''}} {{selected ? 'text-note--selected' : ''}} {{editing ? 'text-note--editing' : ''}} {{locked ? 'text-note--locked' : ''}}"
+      style="left: {{x}}px; top: {{y}}px; max-width: {{width || 200}}px; z-index: {{zIndex || 1}}; {{selected && !editing ? 'overflow: visible;' : ''}}"
+      catchtouchstart="onTouchStart"
+      catchtouchmove="onTouchMove"
+      catchtouchend="onTouchEnd">
+  <!-- 锁定图标 -->
+  <view wx:if="{{locked}}" class="note-lock">
+    <view class="note-lock__icon"></view>
+  </view>
+  <!-- 头部色条 -->
+  <view class="text-note__header">
+    <input class="text-note__title"
+           value="{{title}}"
+           placeholder="标题"
+           placeholder-class="text-note__title-placeholder"
+           disabled="{{locked}}"
+           bindblur="onTitleBlur"
+           bindconfirm="onTitleConfirm"
+           catchtap="onTitleTap" />
+    <view class="text-note__delete" catchtouchstart="_onDeleteTouchStart" catchtouchend="_onDeleteTouchEnd">
+      <text class="text-note__delete-icon">×</text>
+    </view>
+  </view>
+  <!-- 内容区域 -->
+  <view class="text-note__body">
+    <textarea wx:if="{{editing}}"
+              class="text-note__textarea"
+              value="{{content}}"
+              placeholder="写点什么..."
+              placeholder-class="text-note__content-placeholder"
+              focus="{{editing}}"
+              auto-height="{{true}}"
+              bindblur="onContentBlur"
+              bindinput="onContentInput"
+              catchtap="stopPropagation" />
+    <text wx:else class="text-note__content {{content ? '' : 'text-note__content--empty'}}"
+          catchtap="stopPropagation">
+      {{content || '写点什么...'}}
+    </text>
+  </view>
+  <!-- 缩放手柄（选中且非编辑且非锁定时显示） -->
+  <view wx:if="{{selected && !editing && !locked}}"
+        class="resize-handle"
+        catchtouchstart="onResizeStart"
+        catchtouchmove="onResizeMove"
+        catchtouchend="onResizeEnd">
+  </view>
+</view>

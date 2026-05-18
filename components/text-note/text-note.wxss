@@ -1,0 +1,169 @@
+/* components/text-note/text-note.wxss */
+
+.text-note {
+  position: absolute;
+  min-width: 240rpx;
+  max-width: 400rpx;
+  background: #FFF9E6;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  animation: noteAppear 200ms ease-out;
+  z-index: 1;
+}
+
+.text-note--dragging {
+  opacity: 0.85;
+  transform: scale(1.05);
+  z-index: 999;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+}
+
+/* 选中态 */
+.text-note--selected {
+  box-shadow: 0 0 0 2rpx #6C63FF, 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+.text-note--editing {
+  box-shadow: 0 0 0 2rpx #6C63FF, 0 8rpx 24rpx rgba(108, 99, 255, 0.15);
+}
+
+/* 锁定态 */
+.text-note--locked {
+  opacity: 0.7;
+}
+
+.text-note--locked.text-note--selected {
+  box-shadow: 0 0 0 2rpx #95A5A6, 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 头部 */
+.text-note__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 24rpx;
+  background: #FFEAA7;
+}
+
+.text-note__title {
+  flex: 1;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #2D2D3F;
+  line-height: 1.4;
+}
+
+.text-note__title-placeholder {
+  color: #B8A88A;
+  font-weight: normal;
+}
+
+.text-note__delete {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-left: 12rpx;
+  flex-shrink: 0;
+}
+
+.text-note__delete:active {
+  background: rgba(231, 76, 60, 0.12);
+}
+
+.text-note__delete-icon {
+  font-size: 32rpx;
+  color: #A08060;
+  line-height: 1;
+}
+
+/* 内容 */
+.text-note__body {
+  padding: 24rpx;
+}
+
+.text-note__content {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+  font-size: 26rpx;
+  color: #4A4A5A;
+  line-height: 1.6;
+  word-break: break-all;
+  min-height: 36rpx;
+}
+
+.text-note__content--empty {
+  color: #C8C0A8;
+}
+
+.text-note__textarea {
+  width: 100%;
+  min-height: 80rpx;
+  font-size: 26rpx;
+  color: #4A4A5A;
+  line-height: 1.6;
+  word-break: break-all;
+}
+
+.text-note__content-placeholder {
+  color: #C8C0A8;
+}
+
+/* 缩放手柄 */
+.resize-handle {
+  position: absolute;
+  right: -12rpx;
+  bottom: -12rpx;
+  width: 28rpx;
+  height: 28rpx;
+  background: #6C63FF;
+  border-radius: 6rpx;
+  z-index: 10;
+  box-shadow: 0 2rpx 8rpx rgba(108, 99, 255, 0.3);
+}
+
+/* 锁定图标 */
+.note-lock {
+  position: absolute;
+  top: 8rpx;
+  right: 56rpx;
+  z-index: 10;
+  width: 36rpx;
+  height: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(149, 165, 166, 0.15);
+  border-radius: 6rpx;
+}
+
+.note-lock__icon {
+  width: 16rpx;
+  height: 12rpx;
+  background: #95A5A6;
+  border-radius: 2rpx;
+  position: relative;
+}
+
+.note-lock__icon::before {
+  content: '';
+  position: absolute;
+  top: -8rpx;
+  left: 2rpx;
+  width: 12rpx;
+  height: 10rpx;
+  border: 2rpx solid #95A5A6;
+  border-bottom: none;
+  border-radius: 6rpx 6rpx 0 0;
+  background: transparent;
+}
+
+@keyframes noteAppear {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}

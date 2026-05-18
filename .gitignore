@@ -1,0 +1,33 @@
+# 微信开发者工具
+project.private.config.json
+
+# 云函数依赖
+cloudfunctions/*/node_modules/
+
+# npm 依赖
+node_modules/
+
+# 构建产物
+miniprogram_npm/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 日志
+*.log
+npm-debug.log*
+
+# 环境与密钥
+.env
+.env.local
+.env.*.local
+
+# WorkBuddy 工作目录
+.workbuddy/

@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "MyMind",
+  "usingComponents": {
+    "text-note": "../../components/text-note/text-note",
+    "image-note": "../../components/image-note/image-note",
+    "audio-note": "../../components/audio-note/audio-note"
+  }
+}

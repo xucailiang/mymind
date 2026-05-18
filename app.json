@@ -1,0 +1,15 @@
+{
+  "cloud": true,
+  "pages": [
+    "pages/login/login",
+    "pages/canvas/canvas"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTitleText": "MyMind",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FAFEFC"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

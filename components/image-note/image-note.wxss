@@ -1,0 +1,142 @@
+/* components/image-note/image-note.wxss */
+
+.image-note {
+  position: absolute;
+  min-width: 160rpx;
+  background: #EFF6FF;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  animation: imgNoteAppear 200ms ease-out;
+  z-index: 1;
+}
+
+.image-note--dragging {
+  opacity: 0.85;
+  transform: scale(1.05);
+  z-index: 999;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+}
+
+/* 选中态 */
+.image-note--selected {
+  box-shadow: 0 0 0 2rpx #6C63FF, 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 锁定态 */
+.image-note--locked {
+  opacity: 0.7;
+}
+
+.image-note--locked.image-note--selected {
+  box-shadow: 0 0 0 2rpx #95A5A6, 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 头部 */
+.image-note__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 24rpx;
+  background: #BDE0FE;
+}
+
+.image-note__title {
+  flex: 1;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #2D2D3F;
+  line-height: 1.4;
+}
+
+.image-note__title-placeholder {
+  color: #8AACC8;
+  font-weight: normal;
+}
+
+.image-note__delete {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-left: 12rpx;
+  flex-shrink: 0;
+}
+
+.image-note__delete:active {
+  background: rgba(231, 76, 60, 0.12);
+}
+
+.image-note__delete-icon {
+  font-size: 32rpx;
+  color: #6090B8;
+  line-height: 1;
+}
+
+/* 图片 */
+.image-note__body {
+  padding: 24rpx;
+  display: flex;
+  justify-content: center;
+}
+
+.image-note__img {
+  border-radius: 12rpx;
+  background: #D4E6F9;
+}
+
+/* 缩放手柄 */
+.resize-handle {
+  position: absolute;
+  right: -12rpx;
+  bottom: -12rpx;
+  width: 28rpx;
+  height: 28rpx;
+  background: #6C63FF;
+  border-radius: 6rpx;
+  z-index: 10;
+  box-shadow: 0 2rpx 8rpx rgba(108, 99, 255, 0.3);
+}
+
+/* 锁定图标 */
+.note-lock {
+  position: absolute;
+  top: 8rpx;
+  right: 56rpx;
+  z-index: 10;
+  width: 36rpx;
+  height: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(149, 165, 166, 0.15);
+  border-radius: 6rpx;
+}
+
+.note-lock__icon {
+  width: 16rpx;
+  height: 12rpx;
+  background: #95A5A6;
+  border-radius: 2rpx;
+  position: relative;
+}
+
+.note-lock__icon::before {
+  content: '';
+  position: absolute;
+  top: -8rpx;
+  left: 2rpx;
+  width: 12rpx;
+  height: 10rpx;
+  border: 2rpx solid #95A5A6;
+  border-bottom: none;
+  border-radius: 6rpx 6rpx 0 0;
+  background: transparent;
+}
+
+@keyframes imgNoteAppear {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}

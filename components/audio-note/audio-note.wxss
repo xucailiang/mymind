@@ -1,0 +1,213 @@
+/* components/audio-note/audio-note.wxss */
+
+.audio-note {
+  position: absolute;
+  min-width: 360rpx;
+  max-width: 480rpx;
+  background: #F3F0FF;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  animation: audioNoteAppear 200ms ease-out;
+  z-index: 1;
+}
+
+.audio-note--dragging {
+  opacity: 0.85;
+  transform: scale(1.05);
+  z-index: 999;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+}
+
+/* 选中态 */
+.audio-note--selected {
+  box-shadow: 0 0 0 2rpx #6C63FF, 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 锁定态 */
+.audio-note--locked {
+  opacity: 0.7;
+}
+
+.audio-note--locked.audio-note--selected {
+  box-shadow: 0 0 0 2rpx #95A5A6, 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 头部 */
+.audio-note__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 24rpx;
+  background: #E4DCFF;
+}
+
+.audio-note__title {
+  flex: 1;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #2D2D3F;
+  line-height: 1.4;
+}
+
+.audio-note__title-placeholder {
+  color: #A098C0;
+  font-weight: normal;
+}
+
+.audio-note__delete {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-left: 12rpx;
+  flex-shrink: 0;
+}
+
+.audio-note__delete:active {
+  background: rgba(231, 76, 60, 0.12);
+}
+
+.audio-note__delete-icon {
+  font-size: 32rpx;
+  color: #9080B8;
+  line-height: 1;
+}
+
+/* 播放条 */
+.audio-note__body {
+  padding: 24rpx;
+}
+
+.audio-note__player {
+  display: flex;
+  align-items: center;
+  height: 72rpx;
+  border-radius: 36rpx;
+  background: #6C63FF;
+  padding: 0 28rpx;
+  gap: 16rpx;
+}
+
+.audio-note__player--locked {
+  background: #95A5A6;
+}
+
+/* 播放/暂停按钮 */
+.audio-note__play-btn {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* 播放三角 */
+.audio-note__play-icon--play {
+  width: 0;
+  height: 0;
+  border-top: 10rpx solid transparent;
+  border-bottom: 10rpx solid transparent;
+  border-left: 16rpx solid #FFFFFF;
+  margin-left: 4rpx;
+}
+
+/* 暂停双竖线 */
+.audio-note__play-icon--pause {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.audio-note__play-icon--pause::before,
+.audio-note__play-icon--pause::after {
+  content: '';
+  display: block;
+  width: 5rpx;
+  height: 16rpx;
+  background: #FFFFFF;
+  border-radius: 2rpx;
+}
+
+/* 波形 */
+.audio-note__wave {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4rpx;
+  height: 100%;
+}
+
+.audio-note__wave-bar {
+  width: 4rpx;
+  min-height: 8rpx;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 2rpx;
+  transition: height 0.2s;
+}
+
+.audio-note__wave-bar--active {
+  animation: waveAnim 0.6s ease-in-out infinite alternate;
+}
+
+/* 时长 */
+.audio-note__duration {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.9);
+  flex-shrink: 0;
+  min-width: 56rpx;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 锁定图标 */
+.note-lock {
+  position: absolute;
+  top: 8rpx;
+  right: 56rpx;
+  z-index: 10;
+  width: 36rpx;
+  height: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(149, 165, 166, 0.15);
+  border-radius: 6rpx;
+}
+
+.note-lock__icon {
+  width: 16rpx;
+  height: 12rpx;
+  background: #95A5A6;
+  border-radius: 2rpx;
+  position: relative;
+}
+
+.note-lock__icon::before {
+  content: '';
+  position: absolute;
+  top: -8rpx;
+  left: 2rpx;
+  width: 12rpx;
+  height: 10rpx;
+  border: 2rpx solid #95A5A6;
+  border-bottom: none;
+  border-radius: 6rpx 6rpx 0 0;
+  background: transparent;
+}
+
+@keyframes audioNoteAppear {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes waveAnim {
+  0% { height: 8rpx; }
+  100% { height: 32rpx; }
+}

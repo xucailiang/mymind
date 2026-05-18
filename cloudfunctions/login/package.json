@@ -1,0 +1,8 @@
+{
+  "name": "login",
+  "version": "1.0.0",
+  "description": "MyMind 登录云函数",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}
