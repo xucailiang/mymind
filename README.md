@@ -2,7 +2,7 @@
 
 多模态备忘录微信小程序，支持在无限画布上自由放置文字纸条、图片、语音条，并可拖拽、缩放、锁定、排序。
 
-![MyMind 页面截图](image.png)
+<img src="image.png" alt="MyMind 页面截图" width="375">
 
 ## 功能
 
@@ -128,14 +128,3 @@ Mymind/
 
 - [设计文档](docs/design.md) — 产品概述、交互设计、视觉规范
 - [开发文档](docs/dev.md) — 技术架构、组件 API、数据模型
-
-## 真机开发踩坑记录
-
-> 微信开发者工具和真机行为差异很大，以下是在真机上实际踩过的坑：
-
-1. **组件 property 禁用 `id` 命名** — `id` 是 WXML 内置属性，会被框架截获，组件内 `this.data.id` 始终为空。必须用 `itemId` 等替代。
-2. **自定义事件名不能与原生事件重名** — `triggerEvent('touchstart', ...)` 真机上父页面收不到，必须用 `itemtouchstart` 等区分。
-3. **外层 `catchtouchstart` 彻底阻断子元素 `tap`** — 真机上父 view 有 `catchtouchstart` 时，框架不生成 `tap` 事件，子元素 `catchtap` 完全无效。**唯一解法**：用 `catchtouchstart` + `catchtouchend` 手动检测点击（时间 < 300ms + 位移 < 15px）。
-4. **云数据库 `.get()` 默认上限 20 条** — 必须显式加 `.limit(N)`。
-5. **代码风格** — `var`（非 let/const）、`.bind(this)`（非箭头函数）、`.then/.catch`（非 async/await）。Summer 编译器对 ES6 支持不完整。
-6. **`setData` 动态 key** — 必须先构建对象再传入，内联拼接会崩溃。
