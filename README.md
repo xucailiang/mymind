@@ -123,8 +123,3 @@ Mymind/
     ├── design.md          # 设计文档
     └── dev.md             # 开发文档
 ```
-
-## 更多文档
-
-- [设计文档](docs/design.md) — 产品概述、交互设计、视觉规范
-- [开发文档](docs/dev.md) — 技术架构、组件 API、数据模型
